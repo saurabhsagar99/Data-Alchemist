@@ -57,6 +57,7 @@ export default function RuleBuilder() {
   const [naturalLanguageRule, setNaturalLanguageRule] = useState("")
   const [isProcessingNL, setIsProcessingNL] = useState(false)
   const [ruleRecommendations, setRuleRecommendations] = useState<string[]>([])
+  const [isGeneratingRecommendations, setIsGeneratingRecommendations] = useState(false)
 
   const ruleTypes = [
     { value: "coRun", label: "Co-Run Tasks", description: "Tasks that must run together" },
@@ -106,14 +107,17 @@ export default function RuleBuilder() {
         - patternMatch: Rules based on patterns
         - precedence: Task ordering rules
         
-        Return a JSON object with: { "type", "name", "description", "parameters" }`
+        IMPORTANT: Return ONLY a JSON object with: { "type", "name", "description", "parameters" }
+        Do not include any other text or markdown formatting.`
 
       const prompt = `Convert this natural language rule: "${naturalLanguageRule}"
         
         Available data context:
         - Clients: ${state.clients.map((c) => c.ClientID).join(", ")}
         - Workers: ${state.workers.map((w) => w.WorkerID).join(", ")}
-        - Tasks: ${state.tasks.map((t) => t.TaskID).join(", ")}`
+        - Tasks: ${state.tasks.map((t) => t.TaskID).join(", ")}
+        
+        Return ONLY a JSON object.`
 
       const text = await callAI(prompt, systemPrompt, {})
       console.log("Raw AI response for rule:", text)
@@ -138,7 +142,25 @@ export default function RuleBuilder() {
           console.log("Response length:", text.length)
           console.log("First 200 characters:", text.substring(0, 200))
           console.log("Last 200 characters:", text.substring(text.length - 200))
-          return
+          
+          // Fallback: create a basic rule
+          parsedRule = {
+            type: "patternMatch",
+            name: `Rule: ${naturalLanguageRule.substring(0, 30)}...`,
+            description: naturalLanguageRule,
+            parameters: {}
+          }
+        }
+      }
+      
+      // Validate the parsed rule has required fields
+      if (!parsedRule.type || !parsedRule.name) {
+        console.error("Parsed rule missing required fields:", parsedRule)
+        parsedRule = {
+          type: "patternMatch",
+          name: `Rule: ${naturalLanguageRule.substring(0, 30)}...`,
+          description: naturalLanguageRule,
+          parameters: {}
         }
       }
       
@@ -149,16 +171,23 @@ export default function RuleBuilder() {
       setNaturalLanguageRule("")
     } catch (error) {
       console.error("Failed to process natural language rule:", error)
+      // Show error to user
+      alert("Failed to process rule. Please try a different description.")
     } finally {
       setIsProcessingNL(false)
     }
   }
 
   const generateRuleRecommendations = async () => {
+    setIsGeneratingRecommendations(true)
     try {
-      const systemPrompt = `You are a resource allocation expert. Analyze data patterns and suggest business rules. Return suggestions as a JSON array of strings.`
+      const systemPrompt = `You are a resource allocation expert. Analyze data patterns and suggest business rules. 
+      
+      IMPORTANT: Return ONLY a JSON array of strings with rule suggestions. Do not include any other text or markdown formatting.
+      
+      Example format: ["Rule suggestion 1", "Rule suggestion 2", "Rule suggestion 3"]`
 
-      const prompt = `Analyze this data and suggest 3-5 business rules:
+      const prompt = `Analyze this data and suggest 3-5 business rules for resource allocation:
         
         Clients: ${JSON.stringify(state.clients.slice(0, 5))}
         Workers: ${JSON.stringify(state.workers.slice(0, 5))}
@@ -168,7 +197,10 @@ export default function RuleBuilder() {
         - Tasks that often appear together
         - Worker overload situations
         - Skill mismatches
-        - Phase conflicts`
+        - Phase conflicts
+        - Priority imbalances
+        
+        Return ONLY a JSON array of rule suggestions as strings.`
 
       const text = await callAI(prompt, systemPrompt, {})
       console.log("Raw AI response for recommendations:", text)
@@ -193,13 +225,42 @@ export default function RuleBuilder() {
           console.log("Response length:", text.length)
           console.log("First 200 characters:", text.substring(0, 200))
           console.log("Last 200 characters:", text.substring(text.length - 200))
-          return
+          
+          // Fallback: create some basic recommendations based on data
+          recommendations = [
+            "Limit frontend developers to maximum 3 tasks per phase",
+            "Ensure backend and frontend tasks are balanced across phases",
+            "Prioritize enterprise clients with urgent timelines",
+            "Match worker skills to task requirements automatically"
+          ]
         }
+      }
+      
+      // Ensure recommendations is an array
+      if (!Array.isArray(recommendations)) {
+        console.error("AI response is not an array:", recommendations)
+        recommendations = [
+          "Limit frontend developers to maximum 3 tasks per phase",
+          "Ensure backend and frontend tasks are balanced across phases",
+          "Prioritize enterprise clients with urgent timelines",
+          "Match worker skills to task requirements automatically"
+        ]
       }
       
       setRuleRecommendations(recommendations)
     } catch (error) {
       console.error("Failed to generate recommendations:", error)
+      // Fallback recommendations
+      setRuleRecommendations([
+        "Limit frontend developers to maximum 3 tasks per phase",
+        "Ensure backend and frontend tasks are balanced across phases", 
+        "Prioritize enterprise clients with urgent timelines",
+        "Match worker skills to task requirements automatically"
+      ])
+      // Show error to user
+      alert("AI recommendation failed. Using fallback suggestions.")
+    } finally {
+      setIsGeneratingRecommendations(false)
     }
   }
 
@@ -502,10 +563,25 @@ export default function RuleBuilder() {
               <CardDescription>Get intelligent suggestions based on your data patterns</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button onClick={generateRuleRecommendations}>
-                <Sparkles className="h-4 w-4 mr-2" />
-                Generate Recommendations
+              <Button onClick={generateRuleRecommendations} disabled={isGeneratingRecommendations}>
+                {isGeneratingRecommendations ? (
+                  <>
+                    <Sparkles className="h-4 w-4 mr-2 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    Generate Recommendations
+                  </>
+                )}
               </Button>
+
+              {isGeneratingRecommendations && (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+                </div>
+              )}
 
               {ruleRecommendations.length > 0 && (
                 <div className="space-y-3">

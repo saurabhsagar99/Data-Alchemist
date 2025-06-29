@@ -66,10 +66,18 @@ export async function POST(request: NextRequest) {
   try {
     const { prompt, system, context } = await request.json()
 
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
+    // Use the correct environment variable
+    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY
+    if (!apiKey) {
+      console.error("Missing GOOGLE_GENERATIVE_AI_API_KEY environment variable")
+      return NextResponse.json({ error: "AI service not configured" }, { status: 500 })
+    }
+
+    const ai = new GoogleGenAI({ apiKey })
     
+    // Use the correct model name
     const model = ai.models.generateContent({
-      model: "gemini-2.0-flash-exp",
+      model: "gemini-1.5-flash",
       contents: [
         {
           role: "user",
@@ -80,6 +88,8 @@ export async function POST(request: NextRequest) {
 
     const response = await model
     const rawText = response.text || ""
+    
+    console.log("Raw AI response:", rawText)
     
     // Extract JSON if the response contains markdown formatting
     const cleanedText = extractJSONFromMarkdown(rawText)

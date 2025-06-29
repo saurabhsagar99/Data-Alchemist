@@ -9,6 +9,7 @@ import RuleBuilder from "@/components/rule-builder";
 import NaturalLanguageSearch from "@/components/natural-language-search";
 import PrioritizationPanel from "@/components/prioritization-panel";
 import ExportPanel from "@/components/export-panel";
+import AITest from "@/components/ai-test";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -309,6 +310,9 @@ export default function HomePage() {
                         </div>
                       </CardContent>
                     </Card>
+
+                    {/* AI Test Component - Temporary */}
+                    <AITest />
                   </TabsContent>
 
                   <TabsContent value="ingestion" className="space-y-6">
