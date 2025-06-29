@@ -1,0 +1,6 @@
+WorkerID,WorkerName,Skills,AvailableSlots,MaxLoadPerPhase,WorkerGroup,QualificationLevel
+W001,John Smith,"JavaScript,React,Node.js","[1,2,3,4]",3,Frontend,2
+W002,Jane Doe,"Python,Django,SQL","[2,3,4,5]",2,Backend,3
+W003,Mike Johnson,"Java,Spring,MySQL","[1,2,3]",4,Backend,2
+W004,Sarah Wilson,"JavaScript,Angular,TypeScript","[3,4,5]",2,Frontend,1
+W005,David Brown,"Python,Flask,PostgreSQL","[1,2,4,5]",3,Backend,2 

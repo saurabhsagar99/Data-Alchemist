@@ -1,0 +1,6 @@
+TaskID,TaskName,Category,Duration,RequiredSkills,PreferredPhases,MaxConcurrent
+T001,Frontend Development,Development,2,"JavaScript,React","[1,2]",3
+T002,Backend API,Development,3,"Python,Django","[2,3,4]",2
+T003,Database Design,Design,1,"SQL,PostgreSQL","[1]",1
+T004,UI Testing,Testing,1,"JavaScript,Jest","[4,5]",4
+T005,API Documentation,Documentation,1,"Markdown,Swagger","[5]",2 

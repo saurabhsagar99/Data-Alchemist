@@ -1,0 +1,16 @@
+TaskID,TaskName,Category,Duration,RequiredSkills,PreferredPhases,MaxConcurrent
+T001,Frontend Development,Development,2,"JavaScript,React","[1,2,3]",3
+T002,Backend API Development,Development,3,"Python,Django,SQL","[2,3,4]",2
+T003,Database Design & Setup,Infrastructure,1,"SQL,PostgreSQL","[1,2]",1
+T004,UI/UX Design,Design,2,"UI/UX,Adobe Creative Suite","[1,2,3]",2
+T005,E-commerce Platform,Development,4,"JavaScript,React,Node.js","[2,3,4,5]",2
+T006,Security Implementation,Security,2,"Security,Authentication,Authorization","[3,4,5]",1
+T007,Mobile App Development,Mobile,3,"React Native,Mobile Development","[2,3,4]",2
+T008,Content Management System,Development,3,"Python,Django,JavaScript","[1,2,3,4]",2
+T009,Data Analytics Dashboard,Data,2,"Data Analysis,Python,Pandas,SQL","[4,5,6]",2
+T010,DevOps & Deployment,Infrastructure,1,"DevOps,Docker,AWS","[5,6]",1
+T011,Testing & QA,Testing,2,"Testing,Jest,Cypress","[4,5,6]",3
+T012,Documentation & Training,Documentation,1,"Content Writing,Documentation","[6]",2
+T013,Performance Optimization,Optimization,2,"JavaScript,React,Performance","[3,4,5]",1
+T014,API Integration,Integration,2,"JavaScript,Python,API","[2,3,4]",2
+T015,User Authentication System,Security,2,"Authentication,Authorization,Security","[1,2,3]",1 

@@ -1,0 +1,11 @@
+ClientID,ClientName,PriorityLevel,RequestedTaskIDs,GroupTag,AttributesJSON
+C001,Acme Corporation,5,"T001,T002,T003",Enterprise,"{""industry"": ""Technology"", ""budget"": 50000, ""timeline"": ""urgent""}"
+C002,Global Solutions Inc,4,"T002,T004",Enterprise,"{""industry"": ""Consulting"", ""budget"": 35000, ""timeline"": ""standard""}"
+C003,StartupXYZ,3,"T001,T005",Startup,"{""industry"": ""E-commerce"", ""budget"": 15000, ""timeline"": ""flexible""}"
+C004,City Government,5,"T003,T006",Public,"{""industry"": ""Government"", ""budget"": 75000, ""timeline"": ""urgent""}"
+C005,Healthcare Plus,4,"T002,T004,T007",Healthcare,"{""industry"": ""Healthcare"", ""budget"": 45000, ""timeline"": ""standard""}"
+C006,Education First,2,"T001,T008",Education,"{""industry"": ""Education"", ""budget"": 20000, ""timeline"": ""flexible""}"
+C007,Retail Chain,3,"T005,T009",Retail,"{""industry"": ""Retail"", ""budget"": 30000, ""timeline"": ""standard""}"
+C008,Manufacturing Co,4,"T003,T010",Manufacturing,"{""industry"": ""Manufacturing"", ""budget"": 60000, ""timeline"": ""urgent""}"
+C009,Financial Services,5,"T006,T011",Finance,"{""industry"": ""Finance"", ""budget"": 80000, ""timeline"": ""urgent""}"
+C010,Non-Profit Org,1,"T008,T012",NonProfit,"{""industry"": ""Non-Profit"", ""budget"": 10000, ""timeline"": ""flexible""}" 
